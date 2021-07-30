@@ -15,9 +15,13 @@ def index(request):
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['categories'] = category_list
     context_dict['pages'] = page_list
+    request.session.set_test_cookie()
     return render(request, 'rango/index.html', context=context_dict)
    
 def about(request):
+    if request.session.test_cookie_worked():
+        print("TEST COOKIE WORKED!")
+        request.session.delete_test_cookie()
   #  return HttpResponse("Rango says here is the about page. <a href='http://127.0.0.1:8000/'>Index</a>")
     context_dict = {'boldmessage': 'Sofia'}
     return render(request, 'rango/about.html', context=context_dict)
@@ -120,7 +124,7 @@ def user_login(request):
     else:
         return render(request, 'rango/login.html')
 def restricted(request):
-    return HttpResponse("Since you're logged in, you can see this text!")
+    return render(request, 'rango/restricted.html')
 def user_logout(request):
     logout(request)
     return redirect(reverse('rango:index'))
