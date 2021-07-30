@@ -17,16 +17,13 @@ def index(request):
     context_dict['categories'] = category_list
     context_dict['pages'] = page_list
     visitor_cookie_handler(request)
-    context_dict['visits'] = request.session['visits']    response = render(request, 'rango/index.html', context=context_dict)
-    visitor_cookie_handler(request, response)   
-    return response  
+    return render(request, 'rango/index.html', context=context_dict)
+    
 
 def about(request):
-    if request.session.test_cookie_worked():
-        print("TEST COOKIE WORKED!")
-        request.session.delete_test_cookie()
-  #  return HttpResponse("Rango says here is the about page. <a href='http://127.0.0.1:8000/'>Index</a>")
-    context_dict = {'boldmessage': 'Sofia'}
+    context_dict = {}
+    visitor_cookie_handler(request)
+    context_dict['visits'] = request.session['visits']
     return render(request, 'rango/about.html', context=context_dict)
 
 def show_category(request, category_name_slug):
